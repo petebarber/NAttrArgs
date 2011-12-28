@@ -1,7 +1,7 @@
 //
 // NAttrArgs
 //
-// Copyright (c) 2011 Pete Barber
+// Copyright (c) 2012 Pete Barber
 //
 // Licensed under the The Code Project Open License (CPOL.html)
 // http://www.codeproject.com/info/cpol10.aspx 
@@ -30,7 +30,7 @@ namespace NAttrArgs
 			_requiredArgumentAttrs = from member in attrs where member.IsOptional == false orderby member.Rank select member;
 			IEnumerable<MemberAttribute> remainingArgumentAttrs = from member in attrs where member.IsOptional == true && member.IsConsumeRemaining == true orderby member.Rank select member;
 
-			if (remainingArgumentAttrs.Count() > 0)
+			if (remainingArgumentAttrs.Any())
 				_remainingArgumentAttr = remainingArgumentAttrs.First();
 		}
 
@@ -44,13 +44,18 @@ namespace NAttrArgs
 				new RequiredArgumentsParser<T>(t, _requiredArgumentAttrs, argIt).Parse();
 				new RemainingArgumentsParser<T>(t, _remainingArgumentAttr, argIt).Parse();
 
-				if (argIt.MoveNext() == true)
-					throw new Exception("Unexpected arguments");
+				ThrowIfArgumentsRemain(argIt);
 			}
 			catch (Exception e)
 			{
 				throw new NArgException(Usage.GetUsageString(_progName, _optionalArgumentAttrs, _requiredArgumentAttrs, _remainingArgumentAttr), e);
 			}
+		}
+
+		private void ThrowIfArgumentsRemain(ArgIterator argIt)
+		{
+			if (argIt.MoveNext() == true)
+				throw new Exception("Unexpected arguments");
 		}
 
 		private IEnumerable<MemberAttribute> GetAttributes()

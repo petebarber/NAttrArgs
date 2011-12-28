@@ -1,7 +1,7 @@
 ﻿//
 // NAttrArgs
 //
-// Copyright (c) 2011 Pete Barber
+// Copyright (c) 2012 Pete Barber
 //
 // Licensed under the The Code Project Open License (CPOL.html)
 // http://www.codeproject.com/info/cpol10.aspx 
@@ -27,15 +27,26 @@ namespace NAttrArgs
 
 		public void Parse()
 		{
-			if (_options.Count() == 0) return;
+			if (_options.Any() == false) return;
 
-			bool isOption = false;
+			ParseOptions();
+		}
 
-			while (_argIt.MoveNext() && (isOption = _argIt.Current.StartsWith("-")))
-				ParseOptionalArgument();
+		private void ParseOptions()
+		{
+			while (_argIt.MoveNext())
+				if (IsCurrentArgAnOption())
+					ParseOptionalArgument();
+				else
+				{
+					_argIt.MoveBack();
+					return;
+				}
+		}
 
-			if (isOption == false)
-				_argIt.MoveBack();
+		private bool IsCurrentArgAnOption()
+		{
+			return _argIt.Current != null && _argIt.Current.StartsWith("-");
 		}
 
 		private void ParseOptionalArgument()
@@ -47,12 +58,15 @@ namespace NAttrArgs
 			if (handler.HasOptionalArgument == false)
 				MemberSetter.SetOptionalFlagArg(_t, handler, true);
 			else
-			{
-				if (_argIt.MoveNext() == true)
-					MemberSetter.SetArg(_t, handler, _argIt.Current);
-				else
-					throw new Exception(string.Format("Missing value for argument for {0}", argName));
-			}
+				ParseOptionalArgumentWithOptionalArgument(argName, handler);
+		}
+
+		private void ParseOptionalArgumentWithOptionalArgument(string argName, MemberAttribute handler)
+		{
+			if (_argIt.MoveNext() == true)
+				MemberSetter.SetArg(_t, handler, _argIt.Current);
+			else
+				throw new Exception(string.Format("Missing value for argument for {0}", argName));
 		}
 
 		private MemberAttribute FindMatchingOptionOrThrow(string argName)

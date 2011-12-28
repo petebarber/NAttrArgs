@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pete Barber")]
 [assembly: AssemblyProduct("NAttrArgs")]
-[assembly: AssemblyCopyright("Copyright © Pete Barber 2011")]
+[assembly: AssemblyCopyright("Copyright © Pete Barber 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

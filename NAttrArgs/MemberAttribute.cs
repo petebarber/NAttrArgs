@@ -1,7 +1,7 @@
 //
 // NAttrArgs
 //
-// Copyright (c) 2011 Pete Barber
+// Copyright (c) 2012 Pete Barber
 //
 // Licensed under the The Code Project Open License (CPOL.html)
 // http://www.codeproject.com/info/cpol10.aspx 

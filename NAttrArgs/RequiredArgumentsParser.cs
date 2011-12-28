@@ -1,14 +1,13 @@
 ﻿//
 // NAttrArgs
 //
-// Copyright (c) 2011 Pete Barber
+// Copyright (c) 2012 Pete Barber
 //
 // Licensed under the The Code Project Open License (CPOL.html)
 // http://www.codeproject.com/info/cpol10.aspx 
 //
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NAttrArgs
 {
@@ -27,9 +26,6 @@ namespace NAttrArgs
 
 		public void Parse()
 		{
-			if (_required.Count() == 0)
-				return;
-
 			foreach (MemberAttribute arg in _required)
 				if (_argIt.MoveNext())
 					MemberSetter.SetArg(_t, arg, _argIt.Current);

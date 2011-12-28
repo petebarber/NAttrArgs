@@ -1,7 +1,7 @@
 ﻿//
 // NAttrArgs
 //
-// Copyright (c) 2011 Pete Barber
+// Copyright (c) 2012 Pete Barber
 //
 // Licensed under the The Code Project Open License (CPOL.html)
 // http://www.codeproject.com/info/cpol10.aspx 
@@ -21,15 +21,20 @@ namespace NAttrArgs
 
 		public ArgIterator(string[] args)
 		{
-			if (args == null)
-				throw new ArgumentException();
-			else if (args.Length >= int.MaxValue)
-				throw new ArgumentException("array too long");
+			ThrowIfArgsAreInvalid(args);
 			
 			_args = args;
 
 			INDEX_OF_LAST_ITEM = _args.Length - 1;
 			INDEX_AFTER_LAST_ITEM = _args.Length;
+		}
+
+		private void ThrowIfArgsAreInvalid(string[] args)
+		{
+			if (args == null)
+				throw new ArgumentException();
+			else if (args.Length >= int.MaxValue)
+				throw new ArgumentException("array too long");
 		}
 
 		public string Current

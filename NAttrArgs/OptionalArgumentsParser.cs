@@ -27,9 +27,7 @@ namespace NAttrArgs
 
 		public void Parse()
 		{
-			if (_options.Any() == false) return;
-
-			ParseOptions();
+			if (_options.Any()) ParseOptions();
 		}
 
 		private void ParseOptions()
